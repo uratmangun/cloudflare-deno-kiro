@@ -10,9 +10,6 @@ jobs:
   deploy-deno:
     runs-on: ubuntu-latest
     name: Deploy Deno Function
-    permissions:
-      id-token: write
-      contents: read
     outputs:
       deno_url: ${{ steps.deno_url.outputs.deno_url }}
     steps:
@@ -31,6 +28,19 @@ jobs:
           echo "deno_project_name=${PROJECT_NAME}" >> $GITHUB_OUTPUT
           echo "Using repository name as Deno project name: ${PROJECT_NAME}"
 
+      - name: Create Deno Deploy project if not exists
+        run: |
+          PROJECT_NAME="${{ steps.deno_project_name.outputs.deno_project_name }}"
+          echo "Creating Deno Deploy project if it doesn't exist: ${PROJECT_NAME}"
+          
+          # Install deployctl
+          deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+          
+          # Try to create the project (will succeed if it doesn't exist, fail silently if it does)
+          deployctl projects create "${PROJECT_NAME}" || echo "Project may already exist - continuing"
+        env:
+          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         id: deno_deploy
@@ -38,6 +48,7 @@ jobs:
           project: ${{ steps.deno_project_name.outputs.deno_project_name }}
           entrypoint: main.ts
           root: .
+          import-map: deno.json
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
 
