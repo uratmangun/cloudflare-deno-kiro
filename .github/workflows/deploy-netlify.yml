@@ -1,27 +1,74 @@
-name: Deploy to Netlify and Update Homepage
+name: Deploy React App to Netlify
 
 on:
   push:
     branches: [main, master]
     paths:
+      - 'src/**'
+      - 'public/**'
       - 'index.html'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'vite.config.ts'
+      - 'tailwind.config.js'
+      - 'postcss.config.js'
       - '.github/workflows/deploy-netlify.yml'
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Netlify
+    name: Build and Deploy to Netlify
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build React app
+        run: pnpm build
+        env:
+          NODE_ENV: production
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Create or Get Netlify Site
+        id: netlify-site
+        run: |
+          # Check if NETLIFY_SITE_ID is already set
+          if [ -z "${{ secrets.NETLIFY_SITE_ID }}" ]; then
+            echo "Creating new Netlify site..."
+            # Create a new site with the repository name
+            SITE_INFO=$(netlify sites:create --name "${{ github.event.repository.name }}" --json)
+            SITE_ID=$(echo $SITE_INFO | jq -r '.site_id')
+            echo "Created new site with ID: $SITE_ID"
+            echo "site_id=$SITE_ID" >> $GITHUB_OUTPUT
+          else
+            echo "Using existing site ID: ${{ secrets.NETLIFY_SITE_ID }}"
+            echo "site_id=${{ secrets.NETLIFY_SITE_ID }}" >> $GITHUB_OUTPUT
+          fi
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         id: netlify-deploy
         with:
-          publish-dir: '.'
+          publish-dir: './dist'
           production-branch: main
           github-token: ${{ secrets.ADMIN_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
@@ -30,7 +77,7 @@ jobs:
           overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_SITE_ID: ${{ steps.netlify-site.outputs.site_id }}
 
       - name: Update Repository Homepage URL
         if: success()
