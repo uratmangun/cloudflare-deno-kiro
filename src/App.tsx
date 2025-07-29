@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Heart, Github, Globe } from 'lucide-react'
+import { Heart, Github, Globe, Copy, ExternalLink } from 'lucide-react'
 import { StagewiseToolbar } from '@stagewise/toolbar-react'
 import ReactPlugin from '@stagewise-plugins/react'
 import { ThemeProvider } from '@/contexts/ThemeContext'
@@ -79,6 +79,61 @@ function App() {
             A modern React application built with shadcn/ui components, ready for Cloudflare Pages and Deno Deploy.
             Beautiful, accessible, and customizable components built on top of Radix UI and Tailwind CSS.
           </p>
+        </div>
+
+        {/* GitHub CLI Instructions */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200 dark:border-blue-800">
+            <CardHeader className="text-center">
+              <CardTitle className="flex items-center justify-center gap-2 text-blue-700 dark:text-blue-300">
+                <Github className="h-5 w-5" />
+                Create New Repository from Template
+              </CardTitle>
+              <CardDescription className="text-blue-600 dark:text-blue-400">
+                Use GitHub CLI to quickly create a new project based on this template
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-slate-900 dark:bg-slate-800 rounded-lg p-4 relative group">
+                <code className="text-green-400 font-mono text-sm block">
+                  gh repo create my-new-project --template uratmangun/cloudflare-deno-kiro --public --clone
+                </code>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white hover:bg-slate-700"
+                  onClick={() => {
+                    navigator.clipboard.writeText('gh repo create my-new-project --template uratmangun/cloudflare-deno-kiro --public --clone')
+                  }}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="text-sm text-muted-foreground space-y-2">
+                <p>Replace <code className="bg-slate-200 dark:bg-slate-700 px-1 rounded">my-new-project</code> with your desired repository name.</p>
+                <p>This command will:</p>
+                <ul className="list-disc list-inside ml-4 space-y-1">
+                  <li>Create a new repository from this template</li>
+                  <li>Set it as public (use <code className="bg-slate-200 dark:bg-slate-700 px-1 rounded">--private</code> for private repos)</li>
+                  <li>Clone the repository to your local machine</li>
+                </ul>
+              </div>
+              <div className="flex items-center justify-center pt-4">
+                <Button variant="outline" asChild>
+                  <a 
+                    href="https://github.com/uratmangun/cloudflare-deno-kiro" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <Github className="h-4 w-4" />
+                    View Template Repository
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
