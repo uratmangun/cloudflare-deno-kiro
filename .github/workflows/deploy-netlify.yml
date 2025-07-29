@@ -46,23 +46,17 @@ jobs:
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Create or Get Netlify Site
+      - name: Set Netlify Site ID
         id: netlify-site
         run: |
-          # Check if NETLIFY_SITE_ID is already set
-          if [ -z "${{ secrets.NETLIFY_SITE_ID }}" ]; then
-            echo "Creating new Netlify site..."
-            # Create a new site with the repository name
-            SITE_INFO=$(netlify sites:create --name "${{ github.event.repository.name }}" --json)
-            SITE_ID=$(echo $SITE_INFO | jq -r '.site_id')
-            echo "Created new site with ID: $SITE_ID"
-            echo "site_id=$SITE_ID" >> $GITHUB_OUTPUT
-          else
+          # Use existing site ID or create placeholder for new deployment
+          if [ -n "${{ secrets.NETLIFY_SITE_ID }}" ]; then
             echo "Using existing site ID: ${{ secrets.NETLIFY_SITE_ID }}"
             echo "site_id=${{ secrets.NETLIFY_SITE_ID }}" >> $GITHUB_OUTPUT
+          else
+            echo "No site ID configured - deployment will create new site"
+            echo "site_id=" >> $GITHUB_OUTPUT
           fi
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
