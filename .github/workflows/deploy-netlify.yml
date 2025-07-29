@@ -1,0 +1,114 @@
+name: Deploy to Netlify and Update Homepage
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'index.html'
+      - '.github/workflows/deploy-netlify.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Netlify
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        id: netlify-deploy
+        with:
+          publish-dir: '.'
+          production-branch: main
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Update Repository Homepage URL
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          script: |
+            const deploymentUrl = '${{ steps.netlify-deploy.outputs.deploy-url }}';
+            
+            if (deploymentUrl && deploymentUrl !== '') {
+              try {
+                await github.rest.repos.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  homepage: deploymentUrl,
+                  description: '🚀 Kiro & Windsurf Starter Pack - AI-Powered Development Template'
+                });
+                
+                console.log(`✅ Repository homepage updated to: ${deploymentUrl}`);
+              } catch (error) {
+                console.error('❌ Failed to update repository homepage:', error);
+                core.setFailed(`Failed to update homepage: ${error.message}`);
+              }
+            } else {
+              console.log('⚠️ No deployment URL found, skipping homepage update');
+            }
+
+      - name: Comment on PR with deployment URL
+        if: github.event_name == 'pull_request' && success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          script: |
+            const deploymentUrl = '${{ steps.netlify-deploy.outputs.deploy-url }}';
+            
+            if (deploymentUrl && deploymentUrl !== '') {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `🚀 **Netlify Deployment**\n\n✅ Successfully deployed to: ${deploymentUrl}\n\n📝 Preview your changes at the link above!`
+              });
+            }
+
+      - name: Create GitHub deployment
+        if: always()
+        id: create-deployment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              description: 'Netlify deployment',
+              auto_merge: false,
+              required_contexts: []
+            });
+            
+            return deployment.data.id;
+
+      - name: Update deployment status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ADMIN_TOKEN }}
+          script: |
+            const deploymentUrl = '${{ steps.netlify-deploy.outputs.deploy-url }}';
+            const state = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            const deploymentId = ${{ steps.create-deployment.outputs.result }};
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deploymentId,
+              state: state,
+              environment_url: deploymentUrl || '',
+              description: state === 'success' ? 'Deployment succeeded' : 'Deployment failed'
+            });

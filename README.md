@@ -1,145 +1,208 @@
-# 🚀 Kiro & Windsurf Starter Pack
+# React + shadcn/ui + Netlify Boilerplate
 
-A comprehensive starter template that combines the power of **Kiro** (AI-powered development workflows) and **Windsurf** (advanced AI coding assistant) to supercharge your development experience.
+A modern, production-ready React application built with shadcn/ui components and optimized for Netlify deployment.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![AI-Powered](https://img.shields.io/badge/AI-Powered-blue.svg)](https://github.com/topics/artificial-intelligence)
-[![Automation](https://img.shields.io/badge/Automation-Ready-green.svg)](https://github.com/topics/automation)
+## ✨ Features
+
+- **React 19** - Latest version with modern hooks and concurrent features
+- **TypeScript** - Full type safety and better development experience
+- **Vite** - Lightning-fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework for rapid styling
+- **shadcn/ui** - Beautiful, accessible, and customizable UI components
+- **Netlify Ready** - Pre-configured deployment settings
+- **Modern Tooling** - ESLint, TypeScript, and hot module replacement
+- **Path Aliases** - Clean imports with `@/` alias
+- **Dark/Light Theme** - CSS variables for easy theming
 
 ## 🚀 Quick Start
 
-### Clone as Template with GitHub CLI
+### Prerequisites
 
-Create a new project using this template with a custom name:
+- Node.js 18+ installed
+- pnpm (recommended) or bun package manager
 
-```fish
-# Clone this repository as a template with your project name
-gh repo create your-project-name --template uratmangun/kiro-starter-pack --public --clone
+### Installation
 
-# Navigate to your new project
-cd your-project-name
-```
-
-Or for a private repository:
-
-```fish
-gh repo create your-project-name --template uratmangun/kiro-starter-pack --private --clone
-cd your-project-name
-```
-
-## 🎯 What This Template Provides
-
-This starter pack sets up your project with pre-configured automation, workflows, and development standards that work seamlessly with both Kiro and Windsurf.
-
-### 🤖 Kiro Integration
-**Kiro** is an AI-powered development companion that automates repetitive tasks and maintains project standards through intelligent hooks and steering configurations.
-
-### 🌊 Windsurf Integration  
-**Windsurf** is Codeium's revolutionary agentic AI coding assistant that operates on the AI Flow paradigm, enabling both independent work and collaborative pair programming.
-
-## 📦 What's Included
-
-### 🔗 Kiro Hooks (`.kiro/hooks/`)
-Automated workflows that trigger based on project changes:
-
-- **📝 Auto README Generator** - Automatically updates README.md based on project structure
-- **🎯 AKINDO Pitch Generator** - Creates comprehensive project pitch documents
-- **📊 DevPost Pitch Creator** - Generates DevPost submission content
-- **📚 Kiro Usage Documentation** - Documents how Kiro was used in the project
-- **⚖️ OSI License Creator** - Automatically creates OSI-compliant licenses
-- **🔄 Auto Git Commit** - Automated conventional commits with proper formatting
-- **🔍 Project Analysis Tools** - Various hooks for analyzing project structure and workflows
-
-### 🛠️ Windsurf Workflows (`.windsurf/workflows/`)
-Pre-built workflows accessible via slash commands:
-
-- `/AUTO-README-GENERATOR` - Automatically generates or updates README.md files by analyzing project structure
-- `/CREATE-AKINDO-PITCH` - Monitors project files and automatically generates comprehensive AKINDO pitch documents
-- `/CREATE-DEVPOST-PITCH` - Monitors changes and generates DEVPOST.md with inspiration, tech stack, and project details
-- `/CREATE-KIRO-USAGE-AUTO` - Automatically creates or updates HOW_KIRO_WAS_USED.md documentation when .kiro files are modified
-- `/CREATE-OSI-LICENSE-AUTO` - Automatically creates or updates OSI-compliant license files when project config changes
-- `/CREATE-PROJECT-FROM-KIRO-STARTER-PACK` - Automatically creates new projects using the kiro-starter-pack GitHub template
-- `/GIT-PUSH-AUTO` - Automatically stages changes, generates conventional commit messages with emojis, and pushes to remote
-- `/KIRO-TO-WINDSURF-CONVERTER` - Converts .kiro/hooks files to .windsurf/workflows markdown files with proper formatting
-- `/QUESTION-KIRO-HOOKS` - Analyzes all files in .kiro/hooks directory and creates workflow summaries
-- `/QUESTION-KIRO-SPECS` - Analyzes spec structure in .kiro/specs and updates PITCH/SPECS.txt with insights
-- `/QUESTION-KIRO-VIBE` - Creates responses about project conversation patterns and code generation examples
-- `/WINDSURF-TO-KIRO-CONVERTER` - Converts Windsurf workflow markdown files to Kiro hooks JSON format
-
-### 📋 AI Schema Documentation (`ai-schema/`)
-Schema definitions and specifications for automation systems:
-
-- **`kiro-hooks-schema.txt`** - Complete schema specification for Kiro hooks JSON configuration files, including structure, triggers, and automation patterns
-- **`windsurf-workflow-schema.txt`** - Schema specification for Windsurf workflow markdown files, covering YAML frontmatter and instruction formatting
-
-These schema files serve as reference documentation for creating and converting between Kiro hooks and Windsurf workflows, ensuring consistent automation patterns across projects.
-
-### ⚙️ Development Standards (`.kiro/steering/`)
-Predefined configurations for consistent development:
-
-- **🐚 Shell Preferences** - Fish shell configuration and standards
-- **💬 Commit Message Standards** - Conventional commit formats with emojis
-- **📋 Spec Context Rules** - Spec-driven development guidelines
-- **🗄️ Supabase Configurations** - Database and function deployment standards
-
-## 🚀 Getting Started
-
-### 1. Use This Template
-Click the **"Use this template"** button on GitHub to create a new repository with all configurations pre-installed.
-
-### 2. Clone Your New Repository
+1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/your-new-project.git
-cd your-new-project
+git clone <repository-url>
+cd netlify-kiro-boilerplate
 ```
 
-### 3. Start Development
-- **With Kiro**: The hooks will automatically trigger based on your development activities
-- **With Windsurf**: Use the `/` slash commands to access pre-built workflows
-- **Combined**: Enjoy seamless automation and AI-assisted development
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-## ✨ Key Features
+3. Start the development server:
+```bash
+pnpm run dev
+```
 
-- **🔄 Automated Documentation** - README, licenses, and project documentation stay up-to-date
-- **📝 Conventional Commits** - Standardized commit messages with emojis
-- **🎯 Project Pitching** - Automated creation of pitch documents for competitions and showcases
-- **🐚 Fish Shell Optimized** - All configurations use Fish shell for better development experience
-- **🗄️ Supabase Ready** - Pre-configured for Supabase development workflows
-- **📊 Spec-Driven Development** - Built-in support for specification-based development
+4. Open your browser and navigate to `http://localhost:5173`
 
-## 🛠️ Development Standards
+### 🛠 Available Scripts
 
-This template enforces several development best practices:
+```bash
+# Start development server
+pnpm run dev
 
-### Shell & Terminal
-- **Fish Shell Required** - All commands use Fish shell syntax
-- **PNPM for Node.js** - Uses pnpm instead of npm for package management
-- **Conventional Commits** - Standardized commit format with appropriate emojis
+# Build for production
+pnpm run build
 
-### Project Structure
-- **Spec-First Development** - Always read specs before implementation
-- **Automated Quality Checks** - Hooks ensure consistency and quality
-- **Template Reusability** - Designed to be cloned and reused across projects
+# Preview production build
+pnpm run preview
+
+# Lint code
+pnpm run lint
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   └── ui/              # shadcn/ui components
+│       ├── button.tsx   # Button component
+│       └── card.tsx     # Card component
+├── lib/
+│   └── utils.ts         # Utility functions (cn helper)
+├── App.tsx              # Main application component
+├── main.tsx             # Application entry point
+└── index.css            # Global styles and CSS variables
+
+public/                  # Static assets
+tailwind.config.js       # Tailwind CSS configuration
+netlify.toml            # Netlify deployment configuration
+tsconfig.app.json       # TypeScript configuration
+vite.config.ts          # Vite configuration
+```
+
+## 🎨 UI Components
+
+This boilerplate includes pre-built shadcn/ui components:
+
+- **Button** - Various variants (default, outline, destructive, ghost, link)
+- **Card** - Header, content, footer sections
+- **Icons** - Lucide React icons
+
+### Adding More Components
+
+To add additional shadcn/ui components:
+
+1. Install required Radix UI dependencies
+2. Create component files in `src/components/ui/`
+3. Follow the established patterns for consistency
+
+## 🚀 Deployment
+
+### Netlify (Recommended)
+
+This project is optimized for Netlify:
+
+1. **Connect Repository**: Link your Git repository to Netlify
+2. **Auto-Deploy**: Settings are pre-configured in `netlify.toml`
+3. **Build Settings**:
+   - Build command: `pnpm run build`
+   - Publish directory: `dist`
+   - Node version: 18
+
+### Manual Deployment
+
+```bash
+# Build the project
+pnpm run build
+
+# Upload the 'dist' folder to your hosting provider
+```
+
+## 🎯 Customization
+
+### Theming
+
+- **CSS Variables**: Defined in `src/index.css`
+- **Tailwind Config**: Customize in `tailwind.config.js`
+- **Dark Mode**: Automatic support with CSS variables
+
+### Path Aliases
+
+Clean imports using the `@/` alias:
+
+```typescript
+// Instead of: '../../../components/ui/button'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+```
+
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | React 19 |
+| **Language** | TypeScript |
+| **Build Tool** | Vite |
+| **Styling** | Tailwind CSS |
+| **UI Components** | shadcn/ui + Radix UI |
+| **Icons** | Lucide React |
+| **Deployment** | Netlify |
+| **Package Manager** | pnpm |
+
+## 📝 Development Guidelines
+
+### Code Style
+
+- Use TypeScript for all new files
+- Follow the established component patterns
+- Use the `cn()` utility for conditional classes
+- Prefer composition over inheritance
+
+### Component Structure
+
+```typescript
+// Example component structure
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+interface ComponentProps {
+  // Define props here
+}
+
+const Component = React.forwardRef<HTMLElement, ComponentProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <element
+        ref={ref}
+        className={cn("base-classes", className)}
+        {...props}
+      />
+    )
+  }
+)
+Component.displayName = "Component"
+
+export { Component }
+```
 
 ## 🤝 Contributing
 
-This template is designed to evolve with the community:
-
 1. Fork the repository
-2. Make your improvements
-3. Submit a pull request
-4. Help others by sharing your enhancements
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-## 📜 License
+## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## 🆘 Support
 
-- **Kiro Team** - For creating powerful AI development automation
-- **Windsurf/Codeium Team** - For revolutionizing AI-assisted coding
-- **Community Contributors** - For continuously improving this template
+If you encounter any issues or have questions:
+
+1. Check the [documentation](https://ui.shadcn.com/)
+2. Open an issue on GitHub
+3. Join the community discussions
 
 ---
 
-**Ready to supercharge your development workflow?** Start building with the combined power of Kiro and Windsurf! 🚀
+**Built with ❤️ using modern web technologies** • **Ready for production deployment** • **Fully customizable**
