@@ -34,7 +34,7 @@ jobs:
           echo "Creating Deno Deploy project if it doesn't exist: ${PROJECT_NAME}"
           
           # Install latest deployctl
-          deno install --global -A --no-check -r -f https://deno.land/x/deploy@1.15.0/deployctl.ts
+          deno install --global -A --no-check -r -f https://deno.land/x/deploy/deployctl.ts
           
           # Try to create the project (will succeed if it doesn't exist, fail silently if it does)
           deployctl projects create "${PROJECT_NAME}" || echo "Project may already exist - continuing"
