@@ -11,24 +11,50 @@ import {
 import { Heart, Github, Globe } from 'lucide-react'
 import { StagewiseToolbar } from '@stagewise/toolbar-react'
 import ReactPlugin from '@stagewise-plugins/react'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [apiResponse, setApiResponse] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const callNetlifyFunction = async () => {
+    setLoading(true)
+    setError(null)
+    
+    try {
+      const response = await fetch('/.netlify/functions/hello')
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
+      const data = await response.json()
+      setApiResponse(data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+      setApiResponse(null)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <>
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <StagewiseToolbar
         config={{
           plugins: [ReactPlugin],
         }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <ThemeToggle />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 text-gray-900 dark:text-gray-100">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             React + shadcn/ui + Netlify
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
             A modern React application built with shadcn/ui components, ready for Netlify deployment.
             Beautiful, accessible, and customizable components built on top of Radix UI and Tailwind CSS.
           </p>
@@ -103,39 +129,48 @@ function App() {
         </div>
 
         <div className="text-center">
-          <Card className="inline-block">
+          <Card className="inline-block max-w-2xl">
             <CardHeader>
-              <CardTitle>Interactive Counter</CardTitle>
+              <CardTitle>Netlify Function API</CardTitle>
               <CardDescription>
-                Test the component interactivity
+                Test the Netlify function integration
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <div className="text-3xl font-bold mb-4">{count}</div>
-              <div className="flex gap-2 justify-center">
+              <div className="mb-6">
                 <Button 
-                  onClick={() => setCount(count - 1)}
-                  variant="outline"
-                  disabled={count <= 0}
+                  onClick={callNetlifyFunction}
+                  disabled={loading}
+                  size="lg"
                 >
-                  Decrease
-                </Button>
-                <Button onClick={() => setCount(count + 1)}>
-                  Increase
-                </Button>
-                <Button 
-                  onClick={() => setCount(0)}
-                  variant="destructive"
-                >
-                  Reset
+                  {loading ? 'Calling API...' : 'Call Netlify Function'}
                 </Button>
               </div>
+              
+              {error && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
+                  <p className="text-red-700 dark:text-red-300 font-medium">Error:</p>
+                  <p className="text-red-600 dark:text-red-400">{error}</p>
+                </div>
+              )}
+              
+              {apiResponse && (
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                  <p className="text-green-700 dark:text-green-300 font-medium mb-3">API Response:</p>
+                  <div className="text-left space-y-2">
+                    <p><span className="font-medium">Message:</span> {apiResponse.message}</p>
+                    <p><span className="font-medium">Timestamp:</span> {new Date(apiResponse.timestamp).toLocaleString()}</p>
+                    <p><span className="font-medium">Random Number:</span> {apiResponse.randomNumber}</p>
+                    <p><span className="font-medium">Status:</span> <span className="text-green-600 dark:text-green-400">{apiResponse.status}</span></p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
       </div>
     </div>
-    </>
+    </ThemeProvider>
   )
 }
 
