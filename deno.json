@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --watch server.ts",
+    "start": "deno run --allow-net --allow-read server.ts",
+    "main": "deno run --allow-net --allow-read main.ts",
+    "function": "deno run --allow-net --allow-read functions/hello.ts"
+  },
+  "imports": {
+    "@std/": "https://deno.land/std@0.208.0/"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["deno.window", "deno.ns"],
+    "strict": true
+  }
+}

@@ -19,15 +19,36 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const callNetlifyFunction = async () => {
+  const callDenoFunction = async () => {
     setLoading(true)
     setError(null)
     
     try {
-      const response = await fetch('/.netlify/functions/hello')
+      // Get the Deno Deploy URL from environment variable
+      const denoApiUrl = import.meta.env.VITE_DENO_API_URL || 'https://cloudflare-deno-kiro.deno.dev'
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Try Deno server first (local development), fallback to production endpoint
+      const endpoints = [
+        'http://localhost:8000/api/hello', // Local Deno server
+        `${denoApiUrl}/api/hello`, // Production Deno Deploy endpoint
+        '/api/hello' // Fallback endpoint
+      ]
+      
+      let response
+      let lastError
+      
+      for (const endpoint of endpoints) {
+        try {
+          response = await fetch(endpoint)
+          if (response.ok) break
+        } catch (err) {
+          lastError = err
+          continue
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw lastError || new Error(`HTTP error! status: ${response?.status || 'Unknown'}`)
       }
       
       const data = await response.json()
@@ -52,10 +73,10 @@ function App() {
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12 text-gray-900 dark:text-gray-100">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            React + shadcn/ui + Netlify
+            React + shadcn/ui + Cloudflare Pages and Deno Deploy Ready
           </h1>
           <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
-            A modern React application built with shadcn/ui components, ready for Netlify deployment.
+            A modern React application built with shadcn/ui components, ready for Cloudflare Pages and Deno Deploy.
             Beautiful, accessible, and customizable components built on top of Radix UI and Tailwind CSS.
           </p>
         </div>
@@ -87,15 +108,15 @@ function App() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="h-5 w-5 text-blue-500" />
-                Netlify Ready
+                Cloudflare & Deno Ready
               </CardTitle>
               <CardDescription>
-                Optimized for Netlify deployment
+                Optimized for Cloudflare Pages and Deno Deploy
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Pre-configured for seamless deployment to Netlify with optimized build settings.
+                Pre-configured for seamless deployment to Cloudflare Pages and Deno Deploy with optimized build settings.
               </p>
             </CardContent>
             <CardFooter>
@@ -131,19 +152,19 @@ function App() {
         <div className="text-center">
           <Card className="inline-block max-w-2xl">
             <CardHeader>
-              <CardTitle>Netlify Function API</CardTitle>
+              <CardTitle>Serverless Function API</CardTitle>
               <CardDescription>
-                Test the Netlify function integration
+                Test the serverless function integration
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
               <div className="mb-6">
                 <Button 
-                  onClick={callNetlifyFunction}
+                  onClick={callDenoFunction}
                   disabled={loading}
                   size="lg"
                 >
-                  {loading ? 'Calling API...' : 'Call Netlify Function'}
+                  {loading ? 'Calling API...' : 'Call Serverless Function'}
                 </Button>
               </div>
               
