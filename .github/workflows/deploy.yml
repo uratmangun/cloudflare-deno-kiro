@@ -10,6 +10,9 @@ jobs:
   deploy-deno:
     runs-on: ubuntu-latest
     name: Deploy Deno Function
+    permissions:
+      id-token: write
+      contents: read
     outputs:
       deno_url: ${{ steps.deno_url.outputs.deno_url }}
     steps:
