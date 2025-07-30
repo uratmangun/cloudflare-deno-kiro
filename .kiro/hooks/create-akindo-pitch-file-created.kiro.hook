@@ -1,10 +1,10 @@
 {
   "enabled": true,
-  "name": "CREATE AKINDO PITCH FILE SAVED",
-  "description": "Generates AKINDO pitch document when files are saved in src directory",
+  "name": "CREATE AKINDO PITCH FILE CREATED",
+  "description": "Generates AKINDO pitch document when files are created in src directory",
   "version": "1",
   "when": {
-    "type": "fileSaved",
+    "type": "fileCreated",
     "patterns": [
       "src/**/*",
       ".kiro/specs/**/*",

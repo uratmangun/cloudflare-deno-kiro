@@ -1,10 +1,10 @@
 {
   "enabled": true,
-  "name": "CREATE DEVPOST KIRO VIBE FILE SAVED",
+  "name": "CREATE DEVPOST KIRO VIBE FILE CREATED",
   "description": "Creates response about Kiro conversations when files are saved in src directory",
   "version": "1",
   "when": {
-    "type": "fileSaved",
+    "type": "fileCreated",
     "patterns": [
       "src/**/*",
       ".kiro/specs/**/*",

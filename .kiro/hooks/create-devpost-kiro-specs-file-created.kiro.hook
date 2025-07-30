@@ -1,10 +1,10 @@
 {
   "enabled": true,
-  "name": "CREATE DEVPOST KIRO SPECS FILE SAVED",
+  "name": "CREATE DEVPOST KIRO SPECS FILE CREATED",
   "description": "Analyzes spec structure and updates PITCH/SPECS.txt when files are saved in src directory",
   "version": "1",
   "when": {
-    "type": "fileSaved",
+    "type": "fileCreated",
     "patterns": [
       "src/**/*",
       ".kiro/specs/**/*",
