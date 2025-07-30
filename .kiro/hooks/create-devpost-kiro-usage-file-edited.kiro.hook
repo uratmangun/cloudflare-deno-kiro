@@ -1,15 +1,14 @@
 {
   "enabled": true,
-  "name": "CREATE DEVPOST KIRO USAGE",
-  "description": "Automatically create or update HOW_KIRO_WAS_USED.md documentation whenever .kiro configuration files are modified",
+  "name": "CREATE DEVPOST KIRO USAGE FILE EDITED",
+  "description": "Creates HOW_KIRO_WAS_USED.txt documentation when files are edited in src directory",
   "version": "1",
   "when": {
-    "type": "userTriggered",
+    "type": "fileEdited",
     "patterns": [
-      ".kiro/**/*.json",
-      ".kiro/**/*.md",
-      ".kiro/**/*.yaml",
-      ".kiro/**/*.yml"
+      "src/**/*",
+      ".kiro/specs/**/*",
+      "functions/**/*"
     ]
   },
   "then": {

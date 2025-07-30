@@ -1,16 +1,14 @@
 {
   "enabled": true,
-  "name": "CREATE DEVPOST PITCH",
-  "description": "Monitors changes to key project files and generates a DEVPOST.md file with inspiration, what it does, how it was built, challenges, accomplishments, learnings, next steps, tech stack, project name, and elevator pitch",
+  "name": "CREATE DEVPOST PITCH FILE DELETED",
+  "description": "Generates DEVPOST.md file when files are deleted in src directory",
   "version": "1",
   "when": {
-    "type": "userTriggered",
+    "type": "fileDeleted",
     "patterns": [
-      "README.md",
-      "package.json",
-      "src/App.tsx",
-      "src/components/*.tsx",
-      "supabase/migrations/*.sql"
+      "src/**/*",
+      ".kiro/specs/**/*",
+      "functions/**/*"
     ]
   },
   "then": {

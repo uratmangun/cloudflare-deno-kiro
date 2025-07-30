@@ -1,10 +1,10 @@
 {
   "enabled": true,
-  "name": "CREATE-SIMPLE-BLOG-POST",
-  "description": "Creates a simple blog post about the project by analyzing its structure, features, and purpose",
+  "name": "CREATE-SIMPLE-BLOG-POST-FILE-DELETED",
+  "description": "Creates a simple blog post when files are deleted in src directory",
   "version": "1",
   "when": {
-    "type": "userTriggered",
+    "type": "fileDeleted",
     "patterns": [
       "src/**/*",
       ".kiro/specs/**/*",

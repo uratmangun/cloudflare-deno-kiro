@@ -1,12 +1,14 @@
 {
   "enabled": true,
-  "name": "CREATE DEVPOST KIRO HOOKS",
-  "description": "Analyzes all files in the .kiro/hooks directory and creates a summary of automated workflows",
+  "name": "CREATE DEVPOST KIRO HOOKS FILE DELETED",
+  "description": "Creates summary of automated workflows when files are deleted in src directory",
   "version": "1",
   "when": {
-    "type": "userTriggered",
+    "type": "fileDeleted",
     "patterns": [
-      ".kiro/hooks/**/*"
+      "src/**/*",
+      ".kiro/specs/**/*",
+      "functions/**/*"
     ]
   },
   "then": {

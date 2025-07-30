@@ -1,20 +1,14 @@
 {
   "enabled": true,
-  "name": "CREATE AKINDO PITCH",
-  "description": "Monitors project files and automatically generates or updates a comprehensive AKINDO pitch document with project details",
+  "name": "CREATE AKINDO PITCH FILE EDITED",
+  "description": "Generates AKINDO pitch document when files are edited in src directory",
   "version": "1",
   "when": {
-    "type": "userTriggered",
+    "type": "fileEdited",
     "patterns": [
-      "**/*.md",
-      "**/*.js",
-      "**/*.ts",
-      "**/*.jsx",
-      "**/*.tsx",
-      "**/*.html",
-      "**/*.css",
-      "**/*.json",
-      "**/README.md"
+      "src/**/*",
+      ".kiro/specs/**/*",
+      "functions/**/*"
     ]
   },
   "then": {
