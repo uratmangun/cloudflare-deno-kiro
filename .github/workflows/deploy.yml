@@ -28,6 +28,16 @@ jobs:
           echo "deno_project_name=${PROJECT_NAME}" >> $GITHUB_OUTPUT
           echo "Using repository name as Deno project name: ${PROJECT_NAME}"
 
+      - name: Validate Deno Deploy Token
+        run: |
+          if [ -z "${{ secrets.DENO_DEPLOY_TOKEN }}" ]; then
+            echo "❌ Error: DENO_DEPLOY_TOKEN secret is not set"
+            echo "Please add your Deno Deploy token to GitHub repository secrets"
+            echo "Get your token from: https://dash.deno.com/account#access-tokens"
+            exit 1
+          fi
+          echo "✅ DENO_DEPLOY_TOKEN is configured"
+
       - name: Create Deno Deploy project if not exists
         run: |
           PROJECT_NAME="${{ steps.deno_project_name.outputs.deno_project_name }}"
@@ -36,8 +46,11 @@ jobs:
           # Install latest deployctl using JSR
           deno install -A --global jsr:@deno/deployctl
           
+          # Set non-interactive mode to prevent browser authorization prompts
+          export DENO_DEPLOY_TOKEN="${{ secrets.DENO_DEPLOY_TOKEN }}"
+          
           # Try to create the project (will succeed if it doesn't exist, fail silently if it does)
-          deployctl projects create "${PROJECT_NAME}" || echo "Project may already exist - continuing"
+          deployctl projects create "${PROJECT_NAME}" --token="${DENO_DEPLOY_TOKEN}" || echo "Project may already exist - continuing"
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
 
@@ -45,9 +58,27 @@ jobs:
         run: |
           PROJECT_NAME="${{ steps.deno_project_name.outputs.deno_project_name }}"
           echo "Deploying to Deno Deploy project: ${PROJECT_NAME}"
-          deployctl deploy --project="${PROJECT_NAME}" --import-map=deno.json main.ts
+          
+          # Verify deno.json exists
+          if [ ! -f "deno.json" ]; then
+            echo "❌ Error: deno.json not found"
+            exit 1
+          fi
+          
+          echo "✅ Found deno.json with import map"
+          cat deno.json
+          
+          # Deploy with explicit configuration and proper import map
+          deployctl deploy \
+            --project="${PROJECT_NAME}" \
+            --config=deno.json \
+            --token="${{ secrets.DENO_DEPLOY_TOKEN }}" \
+            --exclude=node_modules,dist,build,.git,src,public,*.md \
+            --env=REDIS_URL="${{ secrets.REDIS_URL }}" \
+            main.ts
         env:
           DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
 
       - name: Get Deno Deploy URL
         id: deno_url
@@ -93,6 +124,11 @@ jobs:
         run: pnpm run build
         env:
           NODE_ENV: production
+          # Deno API Configuration
+          VITE_DENO_API_URL: ${{ needs.deploy-deno.outputs.deno_url }}
+          # Privy Authentication Configuration
+          VITE_PRIVY_APP_ID: ${{ secrets.VITE_PRIVY_APP_ID }}
+          VITE_PRIVY_CLIENT_ID: ${{ secrets.VITE_PRIVY_CLIENT_ID }}
           
 
       - name: Set project name from repository
