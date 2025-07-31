@@ -25,3 +25,162 @@ dist-ssr
 
 # Local Netlify folder
 .netlify
+
+# Environment Variables
+# Ignore all .env files except .env.example
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.staging.local
+.env.*.local
+.env.deno
+.env.cloudflare
+.env.vercel
+.env.netlify
+.env.railway
+.env.heroku
+.env.docker
+.env.compose
+.env.dev
+.env.prod
+.env.stage
+.env.preview
+.env.build
+.env.deploy
+.env.ci
+.env.cd
+.env.backup
+.env.bak
+.env.old
+.env.new
+.env.tmp
+.env.temp
+.env.redis
+.env.database
+.env.db
+.env.secrets
+.env.config
+.env.vars
+.env.variables
+
+# Keep .env.example for documentation
+!.env.example
+
+# Deno specific
+.deno/
+deno.lock
+*.deno
+.deno_cache/
+.deno_plugins/
+deno-dir/
+
+# Cloudflare specific
+.wrangler/
+wrangler.toml.local
+.dev.vars
+.dev.vars.local
+.secrets
+.cloudflare/
+_worker.js
+_worker.js.map
+worker/
+functions/_middleware.ts.map
+functions/**/*.js
+functions/**/*.js.map
+!functions/**/*.ts
+
+# Redis specific
+redis.conf
+redis.log
+dump.rdb
+appendonly.aof
+redis-server.pid
+.redis/
+redis-data/
+
+# Build and deployment artifacts
+build/
+out/
+.output/
+.nuxt/
+.next/
+.svelte-kit/
+.turbo/
+.cache/
+.parcel-cache/
+.vite/
+
+# Runtime and temporary files
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.nyc_output
+.grunt
+bower_components
+.lock-wscript
+.tmp
+.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+*.sublime-*
+*.code-workspace
+
+# Testing
+coverage/
+.nyc_output/
+junit.xml
+.coverage
+
+# Logs and monitoring
+*.log.*
+logs/
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+# Compressed files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
