@@ -73,6 +73,7 @@ jobs:
             --project="${PROJECT_NAME}" \
             --config=deno.json \
             --token="${{ secrets.DENO_DEPLOY_TOKEN }}" \
+            --prod \
             --exclude=node_modules,dist,build,.git,src,public,*.md \
             --env=REDIS_URL="${{ secrets.REDIS_URL }}" \
             main.ts
