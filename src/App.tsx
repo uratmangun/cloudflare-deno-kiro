@@ -9,8 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Heart, Github, Globe, Copy, ExternalLink } from 'lucide-react'
-import { StagewiseToolbar } from '@stagewise/toolbar-react'
-import ReactPlugin from '@stagewise-plugins/react'
+
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { ThemeToggle } from '@/components/ThemeToggle'
 
@@ -63,11 +62,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <StagewiseToolbar
-        config={{
-          plugins: [ReactPlugin],
-        }}
-      />
+      
       <ThemeToggle />
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto px-4 py-16">
